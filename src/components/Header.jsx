@@ -1,28 +1,21 @@
+/* eslint-disable react/prop-types */
+import { NavLink } from "react-router-dom";
 
+function Header({ pageTitle }) {
+  return (
+    <>
+      <h1>{pageTitle}</h1>
 
-function Header({pageTitle}) {
+      <div className="header-btns">
+        <NavLink to="/">
+          <button className="btn">Books</button>
+        </NavLink>
+        <NavLink to="/add-book">
+          <button className="btn">Add Book +</button>
+        </NavLink>
+      </div>
+    </>
+  );
+}
 
-    return (
-      <>
-
-            <h1>{pageTitle}</h1>
-
-            <div className="header-btns">
-                
-                    <button className="btn">
-                        Books
-                    </button>
-
-
-                    <button className="btn">
-                        Add Book +
-                    </button>
-               
-            </div>
-    
-      </>
-    )
-  }
-  
-  export default Header
-  
+export default Header;
