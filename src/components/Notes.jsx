@@ -1,20 +1,52 @@
-import { useSelector } from "react-redux";
-import { selectNotes } from "../store/notesReduce";
+import { useDispatch, useSelector } from "react-redux";
+import { addNotes, deletNote, selectNotes } from "../store/notesReduce";
 
-function Notes({id}) {
+function Notes({ id }) {
   const notes = useSelector(selectNotes);
+  const dispatch = useDispatch();
+
+  let note = notes.filter((item) => item.book_id == id);
+
+  const handleAddNote = (e) => {
+    e.preventDefault();
+
+    let newNote = {
+      book_id: id,
+      title: document.querySelector("input[name=title]").value,
+      text: document.querySelector("textarea[name=note]").value,
+    };
+
+    if (newNote.text && newNote.title) {
+      dispatch(addNotes(newNote));
+      alert("Nota adicionada com sucesso!");
+      document.querySelector("input[name=title]").value = "";
+      document.querySelector("textarea[name=note]").value = "";
+    } else {
+      alert("Campos vazios");
+    }
+  };
+
+  const handleDeletNote = (id) => {
+    if (confirm("Deseja apagar mesmo a nota?")) {
+      dispatch(deletNote(id));
+    }
+  };
 
   return (
     <>
       <div className="notes-wrapper">
         <h2>Reader's Notes</h2>
-
         <div className="notes">
-          {notes.map((note) => (
-            <div key={note.id} className="note">
-              <div className="erase-note">Erase note</div>
-              <h3>{note.title}</h3>
-              <p>{note.text}</p>
+          {note.map((item) => (
+            <div key={item.id} className="note">
+              <div
+                onClick={() => handleDeletNote(item.id)}
+                className="erase-note"
+              >
+                Erase note
+              </div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
             </div>
           ))}
         </div>
@@ -31,7 +63,9 @@ function Notes({id}) {
               <textarea type="text" name="note" placeholder="Add note" />
             </div>
 
-            <button className="btn btn-block">Add Note</button>
+            <button onClick={(e) => handleAddNote(e)} className="btn btn-block">
+              Add Note
+            </button>
           </form>
         </details>
       </div>

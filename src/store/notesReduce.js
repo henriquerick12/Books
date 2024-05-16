@@ -23,13 +23,18 @@ const notesSlice = createSlice({
     },
   ],
   reducers: {
-    addNotes: (state) => {
-      return state;
+    addNotes: (state, actions) => {
+      let newNotes = actions.payload;
+      newNotes.id = state.length + 1;
+      state.push(newNotes);
     },
+    deletNote: (state, actions) => {
+      return state.filter(item => item.id !== actions.payload)
+    }
   },
 });
 
-export const { addNotes } = notesSlice.actions;
+export const { addNotes,deletNote } = notesSlice.actions;
 export const selectNotes = (state) => state.notes;
 
 export default notesSlice.reducer;

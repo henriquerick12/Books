@@ -55,7 +55,7 @@ function SingleBookPage() {
                 </div>
               </div>
             </div>
-            <Notes id={books.id}/>
+            <Notes id={book.id}/>
           </div>
         ) : (
           <h1>Book não encontrado</h1>
