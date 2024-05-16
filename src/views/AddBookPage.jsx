@@ -1,31 +1,46 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Header from "../components/Header.jsx";
+import { addBook } from "../store/bookReduce.js";
 
 function AddBookPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const pageTitle = "Add Book";
 
-  const handleSubmitAdd = (e) => {
+  function handleSubmitAdd(e) {
     e.preventDefault();
-    alert("ok");
+    const newBook = {
+      title: document.querySelector("input[name=title]").value,
+      cover: document.querySelector("input[name=cover]").value,
+      isRead: false,
+      author: document.querySelector("input[name=author]").value,
+      synopsis: document.querySelector("textarea[name=synopsis]").value,
+    };
 
-    navigate("/");
-  };
+    if (newBook.title && newBook.cover && newBook.author && newBook.synopsis) {
+      dispatch(addBook(newBook));
+      alert("Criado com sucesso!");
+      navigate("/");
+    } else {
+      alert("Preencha os campos obrigatorios!");
+    }
+  }
 
   return (
     <>
       <div className="container">
         <Header pageTitle={pageTitle} />
 
-        <form className="add-form" onSubmit={(e) => handleSubmitAdd(e)}>
+        <form className="add-form">
           <div className="form-control">
             <label>Title *</label>
             <input type="text" name="title" placeholder="Add Book Title" />
           </div>
           <div className="form-control">
             <label>Book Cover *</label>
-            <input type="text" name="cover" placeholder="Add Cover" />
+            <input required type="text" name="cover" placeholder="Add Cover" />
           </div>
 
           <div className="form-control">
@@ -42,7 +57,9 @@ function AddBookPage() {
             />
           </div>
 
-          <button className="btn btn-block">Save Book</button>
+          <button onClick={(e) => handleSubmitAdd(e)} className="btn btn-block">
+            Save Book
+          </button>
         </form>
       </div>
     </>
